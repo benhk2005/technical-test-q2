@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moovup_flutter/bloc/main_bloc.dart';
+import 'package:moovup_flutter/map/map_view.dart';
 import 'package:moovup_flutter/model/person.dart';
 
 class PeopleList extends StatelessWidget {
@@ -10,8 +11,13 @@ class PeopleList extends StatelessWidget {
   void handlePersonClick(BuildContext context, Person person) {
     if (!person.shouldShowInMap()) {
       showLocationIncorrectDialog(context);
+      return;
     }
-    print("${person.lat} ${person.lng}");
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => MapView(
+        person: person,
+      ),
+    ));
   }
 
   void showLocationIncorrectDialog(BuildContext context) {
@@ -69,6 +75,7 @@ class PersonCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTapCallback(person),
       child: Container(
+        decoration: const BoxDecoration(),
         padding: const EdgeInsets.all(
           16.0,
         ),
@@ -100,13 +107,7 @@ class PersonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    person.id,
-                  ),
-                  Text(
                     person.getName(),
-                  ),
-                  Text(
-                    person.email ?? "",
                   ),
                 ],
               ),

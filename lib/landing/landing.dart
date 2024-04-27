@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moovup_flutter/listing/people_list.dart';
+import 'package:moovup_flutter/map/map_view.dart';
 
 class LandingWidget extends StatefulWidget {
   const LandingWidget({super.key});
@@ -28,9 +29,9 @@ class _LandingWidgetState extends State<LandingWidget>
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
-        children: [
-          const PeopleList(),
-          Container(),
+        children: const [
+          PeopleList(),
+          MapView(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
