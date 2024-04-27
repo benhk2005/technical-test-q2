@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:moovup_flutter/listing/people_list.dart';
 import 'package:moovup_flutter/model/person.dart';
 
 import '../bloc/main_bloc.dart';
@@ -106,7 +107,7 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin {
     }
     initialCameraPosition = CameraPosition(
       target: LatLng((minLat + maxLat) / 2, (minLng + maxLng) / 2),
-      zoom: 7.0,
+      zoom: 9.0,
     );
     markers = set;
   }
@@ -126,15 +127,39 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin {
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : GoogleMap(
-                  markers: markers,
-                  mapType: MapType.normal,
-                  initialCameraPosition: getInitialCameraPosition(),
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                ),
+              : getContentView(),
         );
+      },
+    );
+  }
+
+  Widget getContentView() {
+    if (showSinglePerson()) {
+      return Column(
+        children: [
+          Expanded(
+            child: getGoogleMap(),
+          ),
+          PersonCard(
+            person: widget.person!,
+            withEmail: true,
+            bottomInset: MediaQuery.of(context).padding.bottom,
+            onTapCallback: (Person person) {},
+          ),
+        ],
+      );
+    } else {
+      return getGoogleMap();
+    }
+  }
+
+  GoogleMap getGoogleMap() {
+    return GoogleMap(
+      markers: markers,
+      mapType: MapType.normal,
+      initialCameraPosition: getInitialCameraPosition(),
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
       },
     );
   }

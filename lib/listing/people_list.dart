@@ -64,9 +64,13 @@ class PeopleList extends StatelessWidget {
 class PersonCard extends StatelessWidget {
   final Person person;
   final Function(Person person) onTapCallback;
+  final bool withEmail;
+  final double? bottomInset;
   const PersonCard({
     super.key,
     required this.person,
+    this.withEmail = false,
+    this.bottomInset,
     required this.onTapCallback,
   });
 
@@ -76,8 +80,11 @@ class PersonCard extends StatelessWidget {
       onTap: () => onTapCallback(person),
       child: Container(
         decoration: const BoxDecoration(),
-        padding: const EdgeInsets.all(
-          16.0,
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+          top: 16.0,
+          bottom: bottomInset ?? 16.0,
         ),
         child: Row(
           children: [
@@ -109,6 +116,13 @@ class PersonCard extends StatelessWidget {
                   Text(
                     person.getName(),
                   ),
+                  ...((withEmail)
+                      ? [
+                          Text(
+                            person.email ?? "",
+                          ),
+                        ]
+                      : [])
                 ],
               ),
             ),
