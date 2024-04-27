@@ -17,6 +17,10 @@ class Person {
     this.lng,
   });
 
+  bool shouldShowInMap() {
+    return (lat != null && lng != null);
+  }
+
   String getName() {
     if (lastName != null && firstName != null) {
       return "$firstName $lastName";

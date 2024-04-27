@@ -7,6 +7,31 @@ import 'package:moovup_flutter/model/person.dart';
 class PeopleList extends StatelessWidget {
   const PeopleList({super.key});
 
+  void handlePersonClick(BuildContext context, Person person) {
+    if (!person.shouldShowInMap()) {
+      showLocationIncorrectDialog(context);
+    }
+    print("${person.lat} ${person.lng}");
+  }
+
+  void showLocationIncorrectDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Unable to show in map"),
+        content: const Text("Incorrect location data"),
+        actions: [
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainBloc, MainBlocState>(
@@ -21,6 +46,7 @@ class PeopleList extends StatelessWidget {
             itemCount: state.people.length,
             itemBuilder: (context, index) => PersonCard(
               person: state.people[index],
+              onTapCallback: (person) => {handlePersonClick(context, person)},
             ),
           );
         }
@@ -31,57 +57,62 @@ class PeopleList extends StatelessWidget {
 
 class PersonCard extends StatelessWidget {
   final Person person;
+  final Function(Person person) onTapCallback;
   const PersonCard({
     super.key,
     required this.person,
+    required this.onTapCallback,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(
-        16.0,
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 48.0,
-            height: 48.0,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(
-                24.0,
-              ),
-              child: CachedNetworkImage(
-                fit: BoxFit.cover,
-                imageUrl: person.picture ?? "",
-                placeholder: (context, url) => Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade600,
+    return GestureDetector(
+      onTap: () => onTapCallback(person),
+      child: Container(
+        padding: const EdgeInsets.all(
+          16.0,
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 48.0,
+              height: 48.0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  24.0,
+                ),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: person.picture ?? "",
+                  placeholder: (context, url) => Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade600,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 8.0,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  person.id,
-                ),
-                Text(
-                  person.getName(),
-                ),
-                Text(
-                  person.email ?? "",
-                ),
-              ],
+            const SizedBox(
+              width: 8.0,
             ),
-          ),
-        ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    person.id,
+                  ),
+                  Text(
+                    person.getName(),
+                  ),
+                  Text(
+                    person.email ?? "",
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
