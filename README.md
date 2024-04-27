@@ -3,7 +3,7 @@
 ## Reminder
 ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 
-Due to the limitation of Google Map API Key, for android build, it might not be able to show the Google Map as I enabled the API key restriction with SHA-1 fingerprint.
+Due to the limitation of Google Map API Key and API Key has to published to GitHub. For android build, it will not be able to show the Google Map as I enabled the API key restriction with SHA-1 fingerprint.
 Please download APK on Relase section for Android
 
 ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
