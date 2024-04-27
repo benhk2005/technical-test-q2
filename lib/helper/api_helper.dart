@@ -9,7 +9,6 @@ abstract class APIHelper {
   static const String apiToken = "b2atclr0nk1po45amg305meheqf4xrjt9a1bo410";
 
   static Future<List<Person>> getPeople() async {
-    await Future.delayed(const Duration(seconds: 3));
     final response = await http.get(
       Uri.parse(url),
       headers: {

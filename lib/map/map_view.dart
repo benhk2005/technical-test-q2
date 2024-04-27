@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -143,13 +144,21 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin {
           PersonCard(
             person: widget.person!,
             withEmail: true,
-            bottomInset: MediaQuery.of(context).padding.bottom,
+            bottomInset: getBottomInsets(),
             onTapCallback: (Person person) {},
           ),
         ],
       );
     } else {
       return getGoogleMap();
+    }
+  }
+
+  double getBottomInsets() {
+    if (Platform.isAndroid) {
+      return MediaQuery.of(context).padding.bottom + 16.0;
+    } else {
+      return MediaQuery.of(context).padding.bottom;
     }
   }
 
