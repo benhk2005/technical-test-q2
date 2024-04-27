@@ -1,5 +1,11 @@
 # Technical Test Q2
 
+## Reminder
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+Due to the limitation of Google Map API Key, for android build, it might not be able to show the Google Map as I enabled the API key restriction with SHA-1 fingerprint.
+Please download APK on Relase section for Android
+⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+
 ## Environment
 
 ```
