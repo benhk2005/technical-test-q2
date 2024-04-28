@@ -44,6 +44,12 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin {
           [widget.person!],
         );
       });
+    } else {
+      setState(() {
+        generateMarkers(
+          context.read<MainBloc>().state.people,
+        );
+      });
     }
   }
 
@@ -116,12 +122,14 @@ class _MapViewState extends State<MapView> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<MainBloc, MainBlocState>(
+    return BlocConsumer<MainBloc, MainBlocState>(
+      listener: (_, state) => {
+        setState(() {
+          generateMarkers(context.read<MainBloc>().state.people);
+        })
+      },
       bloc: context.read(),
       builder: (context, state) {
-        if (!showSinglePerson()) {
-          generateMarkers(state.people);
-        }
         return Scaffold(
           appBar: getHeaderBar(),
           body: state.isLoading
